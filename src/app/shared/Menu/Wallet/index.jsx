@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import './Wallet.scss'
 import { login, logout } from '../../../../store/actions/authActions'
+import {
+	destroyContracts,
+	makeContracts
+} from '../../../../store/actions/contractActions'
 
 export function Wallet() {
 	const [loading, setLoading] = useState(false)
@@ -37,8 +41,10 @@ export function Wallet() {
 				return
 			}
 			dispatch(login({ address, provider, signer, chainId }))
+			dispatch(makeContracts(signer))
 			setLoading(false)
 		} else {
+			dispatch(destroyContracts())
 			dispatch(logout())
 			setLoading(false)
 			navigate('/')

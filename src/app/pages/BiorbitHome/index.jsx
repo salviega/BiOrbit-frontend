@@ -1,11 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from '../../../store/actions/uiActions'
 import './BiorbitHome.scss'
 import { ProtectedAreaForm } from './ProtectedAreaForm'
 
 export function BioOrbitHome() {
+	const dispatch = useDispatch()
 	const user = useSelector(state => state.auth)
-	console.log(user)
+	const contracts = useSelector(store => store.contracts)
+
+	const onError = error => {
+		console.log('❌ error: ', error)
+		window.alert('There war an error, look the console')
+		dispatch(setLoading(false))
+	}
 
 	return (
 		<>
@@ -29,7 +37,12 @@ export function BioOrbitHome() {
 							>
 								Get coordinates
 							</a>
-							<ProtectedAreaForm user={user}></ProtectedAreaForm>
+							<ProtectedAreaForm
+								user={user}
+								contracts={contracts}
+								dispatch={dispatch}
+								onError={onError}
+							></ProtectedAreaForm>
 						</div>
 					</div>
 				</div>

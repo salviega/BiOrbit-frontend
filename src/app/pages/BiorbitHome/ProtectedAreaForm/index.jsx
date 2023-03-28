@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import './ProtectedAreaForm.scss'
 
 export function ProtectedAreaForm(props) {
-	const { user } = props
+	const { user, contracts, dispatch, onError } = props
 	const [isValid, setIsValid] = useState(false)
 	const [coordinates, setCoordinates] = useState('')
 	const [text, setText] = useState('')
@@ -14,6 +14,7 @@ export function ProtectedAreaForm(props) {
 	const protectedAreaPhoto = useRef(null)
 	const protectedAreaDescription = useRef('')
 	const protectedAreaCoordinates = useRef('')
+	const protectedAreaCountry = useRef('')
 
 	const handleClose = () => setShow(false)
 	const handleShow = () => setShow(true)
@@ -24,14 +25,35 @@ export function ProtectedAreaForm(props) {
 			_name: protectedAreaName.current.value,
 			_photo: protectedAreaPhoto.current.files[0],
 			_description: protectedAreaDescription.current.value,
-			_coordinates: protectedAreaCoordinates.current.value
+			_coordinates: protectedAreaCoordinates.current.value,
+			_country: protectedAreaCountry.current.value
 		}
 
 		info._name = changeSpacetoUnderscoreAndLowerCase(info._name)
 		info._photo = await convertToBase64(info._photo)
 
-		console.log(info)
-		setShow(true)
+		try {
+			const tx = await contracts.biorbitContract.monitorProtectedArea(
+				info._name,
+				info._photo,
+				info._description,
+				info._coordinates,
+				info._country,
+				{ gasLimit: 2500000 }
+			)
+
+			user.provider.waitForTransaction(tx.hash).then(async _response => {
+				setTimeout(() => {
+					window.alert(
+						'The protected area will begin to be monitored, come back tomorrow'
+					)
+				}, 3000)
+			})
+		} catch (error) {
+			onError(error)
+		}
+
+		handleClose()
 	}
 
 	const handleTextChange = event => {
@@ -122,6 +144,15 @@ export function ProtectedAreaForm(props) {
 								value={coordinates}
 								onChange={handleCoordinatesChange}
 								ref={protectedAreaCoordinates}
+							/>
+						</Form.Group>
+						<Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
+							<Form.Label>Protected area country</Form.Label>
+							<Form.Control
+								type='text'
+								placeholder='United State'
+								autoFocus
+								ref={protectedAreaCountry}
 							/>
 						</Form.Group>
 					</Form>
