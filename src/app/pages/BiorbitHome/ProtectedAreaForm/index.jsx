@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import './ProtectedAreaForm.scss'
+import { ethers } from 'ethers'
 
 export function ProtectedAreaForm(props) {
 	const { user, contracts, dispatch, onError } = props
@@ -30,16 +31,16 @@ export function ProtectedAreaForm(props) {
 		}
 
 		info._name = changeSpacetoUnderscoreAndLowerCase(info._name)
-		info._photo = await convertToBase64(info._photo)
+		const donation = await contracts.biorbitContract.donation()
 
 		try {
 			const tx = await contracts.biorbitContract.monitorProtectedArea(
 				info._name,
-				info._photo,
+				'dsdsds',
 				info._description,
 				info._coordinates,
 				info._country,
-				{ gasLimit: 2500000 }
+				{ value: donation, gasLimit: 3000000 }
 			)
 
 			user.provider.waitForTransaction(tx.hash).then(async _response => {
@@ -53,7 +54,7 @@ export function ProtectedAreaForm(props) {
 			onError(error)
 		}
 
-		handleClose()
+		//handleClose()
 	}
 
 	const handleTextChange = event => {

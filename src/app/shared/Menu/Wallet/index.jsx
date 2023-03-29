@@ -33,8 +33,8 @@ export function Wallet() {
 
 			const signer = provider.getSigner()
 			const chainId = await signer.getChainId()
-			if (chainId !== 3141) {
-				window.alert('Change your network to Hyperspace testnet!')
+			if (chainId !== 80001) {
+				window.alert('Change your network to Mumbai testnet!')
 				dispatch(logout())
 				setLoading(false)
 				navigate('/')
