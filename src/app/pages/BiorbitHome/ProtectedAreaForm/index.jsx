@@ -36,10 +36,7 @@ export function ProtectedAreaForm(props) {
 		try {
 			const tx = await contracts.biorbitContract.monitorProtectedArea(
 				info._name,
-				'dsdsds',
-				info._description,
 				info._coordinates,
-				info._country,
 				{ value: donation, gasLimit: 3000000 }
 			)
 
