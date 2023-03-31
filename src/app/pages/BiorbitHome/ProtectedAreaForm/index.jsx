@@ -3,10 +3,9 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import './ProtectedAreaForm.scss'
-import { ethers } from 'ethers'
 
 export function ProtectedAreaForm(props) {
-	const { user, contracts, dispatch, onError } = props
+	const { user, contracts, dispatch, onError, createItem } = props
 	const [isValid, setIsValid] = useState(false)
 	const [coordinates, setCoordinates] = useState('')
 	const [text, setText] = useState('')
@@ -31,27 +30,33 @@ export function ProtectedAreaForm(props) {
 		}
 
 		info._name = changeSpacetoUnderscoreAndLowerCase(info._name)
+		info._photo = await convertToBase64(info._photo)
 		const donation = await contracts.biorbitContract.donation()
 
-		try {
-			const tx = await contracts.biorbitContract.monitorProtectedArea(
-				info._name,
-				info._coordinates,
-				{ value: donation, gasLimit: 3000000 }
-			)
+		await createItem({
+			...info
+		})
+		console.log(':D')
+		handleClose()
 
-			user.provider.waitForTransaction(tx.hash).then(async _response => {
-				setTimeout(() => {
-					window.alert(
-						'The protected area will begin to be monitored, come back tomorrow'
-					)
-				}, 3000)
-			})
-		} catch (error) {
-			onError(error)
-		}
+		// try {
+		// 	const tx = await contracts.biorbitContract.monitorProtectedArea(
+		// 		info._name,
+		// 		info._coordinates,
+		// 		{ value: donation, gasLimit: 3000000 }
+		// 	)
 
-		//handleClose()
+		// 	user.provider.waitForTransaction(tx.hash).then(async _response => {
+		// 		setTimeout(async () => {
+		// 			await createItem(info)
+		// 			window.alert(
+		// 				'The protected area will begin to be monitored, come back tomorrow'
+		// 			)
+		// 		}, 3000)
+		// 	})
+		// } catch (error) {
+		// 	onError(error)
+		// }
 	}
 
 	const handleTextChange = event => {
