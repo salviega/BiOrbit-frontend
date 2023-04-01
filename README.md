@@ -6,6 +6,10 @@ BiOrbit: Sustainable Blockchain Hackathon - Boston
 
 Repository url: https://github.com/salviega/BiOrbit-hardhat
 
+### BiOrbit - backend node: lister
+
+Repository url: https://github.com/salviega/BiOrbit-backend-node-listener.git
+
 ### BiOrbit - backend node: relay
 
 Repository url: https://github.com/salviega/BiOrbit-backend-node
@@ -14,7 +18,7 @@ Repository url: https://github.com/salviega/BiOrbit-backend-node
 
 Repository url: https://github.com/salviega/BiOrbit-backend-python-image-processing
 
-### BiOrbit - backend python: minting images:
+### BiOrbit - backend python: minting images by CO2 and Stuary
 
 Repository url: https://github.com/Oriojas/BiOrbit_data
 
