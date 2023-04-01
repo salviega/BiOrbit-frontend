@@ -36,27 +36,29 @@ export function ProtectedAreaForm(props) {
 		await createItem({
 			...info
 		})
-		console.log(':D')
 		handleClose()
 
-		// try {
-		// 	const tx = await contracts.biorbitContract.monitorProtectedArea(
-		// 		info._name,
-		// 		info._coordinates,
-		// 		{ value: donation, gasLimit: 3000000 }
-		// 	)
+		try {
+			try {
+				const tx = await contracts.biorbitContract.monitorProtectedArea(
+					info._name,
+					info._coordinates,
+					{ value: donation, gasLimit: 3000000 }
+				)
 
-		// 	user.provider.waitForTransaction(tx.hash).then(async _response => {
-		// 		setTimeout(async () => {
-		// 			await createItem(info)
-		// 			window.alert(
-		// 				'The protected area will begin to be monitored, come back tomorrow'
-		// 			)
-		// 		}, 3000)
-		// 	})
-		// } catch (error) {
-		// 	onError(error)
-		// }
+				user.provider.waitForTransaction(tx.hash).then(async _response => {
+					setTimeout(async () => {
+						window.alert(
+							'The protected area will begin to be monitored, come back tomorrow'
+						)
+					}, 3000)
+				})
+			} catch (error) {
+				onError(error)
+			}
+		} catch (error) {
+			onError(error)
+		}
 	}
 
 	const handleTextChange = event => {

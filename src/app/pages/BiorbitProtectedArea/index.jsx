@@ -1,8 +1,10 @@
+import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation, useParams } from 'react-router-dom'
 import './BiorbitProtectedArea.scss'
+import { Collection } from './Collection'
 import { NftCard } from './NftCard'
 
 export function BiorbitProtectedArea() {
@@ -10,6 +12,7 @@ export function BiorbitProtectedArea() {
 	const user = useSelector(state => state.auth)
 	const contracts = useSelector(state => state.contracts)
 	const [nfts, setNfts] = useState([])
+	const [collection, setCollection] = useState({ date: [], coverForest: [] })
 	const [loading, setLoading] = useState(true)
 	const [sincronized, setSincronized] = useState(false)
 	const { slug } = useParams()
@@ -25,6 +28,15 @@ export function BiorbitProtectedArea() {
 	useEffect(() => {
 		const fetch = async () => {
 			try {
+				const protectedAreaStats =
+					await contracts.biorbitContract.getProtectedAreaByName(
+						protectedArea._name
+					)
+				setCollection({
+					date: protectedAreaStats[5],
+					coverForest: protectedAreaStats[6]
+				})
+
 				setNfts(
 					await contracts.biorbitContract.getSoldSatelliteImagesByProtectedArea(
 						protectedArea._name
@@ -82,6 +94,7 @@ export function BiorbitProtectedArea() {
 						<NftCard
 							key={index}
 							user={user}
+							protectedArea={protectedArea}
 							contracts={contracts}
 							nft={nft}
 							setLoading={setLoading}
@@ -91,6 +104,7 @@ export function BiorbitProtectedArea() {
 					))
 				)}
 			</div>
+			<Collection collection={collection} />
 		</div>
 	)
 }

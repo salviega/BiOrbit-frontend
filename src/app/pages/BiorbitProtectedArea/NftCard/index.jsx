@@ -1,32 +1,40 @@
-import { async } from '@firebase/util'
 import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import './NftCard.scss'
 
 export function NftCard(props) {
-	const { key, user, contracts, nft, setLoading, setSincronized, onError } =
-		props
+	const {
+		key,
+		user,
+		protectedArea,
+		contracts,
+		nft,
+		setLoading,
+		setSincronized,
+		onError
+	} = props
 	const [image, setImage] = useState('')
 	const [detectionDate, setDetectionDate] = useState('')
 
 	let bigNumber = ethers.BigNumber.from(nft[0])
-	const id = parseInt(bigNumber.toString(), 10)
+	const id = parseInt(bigNumber.toString())
 
 	const uri = nft[2]
 
 	bigNumber = ethers.BigNumber.from(nft[3])
 	const price = parseInt(bigNumber.toString(), 10)
-	console.log('price: ', price)
-
-	console.log(nft)
 
 	const onBuySatelliteImage = async () => {
 		try {
 			setLoading(true)
-			const tx = await contracts.biorbitContract.buySatelliteImage(nft[0], {
-				value: price,
-				gasLimit: 3000000
-			})
+			const tx = await contracts.biorbitContract.buySatelliteImage(
+				nft[0],
+				protectedArea._name,
+				{
+					value: price,
+					gasLimit: 3000000
+				}
+			)
 
 			user.provider.waitForTransaction(tx.hash).then(async _response => {
 				setTimeout(async () => {
