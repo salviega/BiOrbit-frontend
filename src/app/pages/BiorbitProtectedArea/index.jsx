@@ -28,6 +28,11 @@ export function BiorbitProtectedArea() {
 	useEffect(() => {
 		const fetch = async () => {
 			try {
+				console.log(
+					await contracts.biorbitContract.getProtectedAreaByName(
+						protectedArea._name
+					)
+				)
 				const protectedAreaStats =
 					await contracts.biorbitContract.getProtectedAreaByName(
 						protectedArea._name
