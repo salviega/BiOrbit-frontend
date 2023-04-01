@@ -8,7 +8,7 @@ Repository url: https://github.com/salviega/BiOrbit-hardhat
 
 ### BiOrbit - backend node: listener
 
-Repository url: https://github.com/salviega/BiOrbit-backend-node-listener.git
+Repository url: https://github.com/salviega/BiOrbit-backend-node-listener
 
 ### BiOrbit - backend node: relay
 
